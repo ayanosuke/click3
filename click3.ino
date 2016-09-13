@@ -26,11 +26,11 @@ void ButtonState2(){
             break;
     case 1:                                       // 50msec周期の監視
             if( millis()-Ti >50){
-              di = digitalRead(A2);  
-              if(di == 0 || bufp > 0) {
+              di = digitalRead(A2);               // ボタン読み込み
+              if(di == 0 || bufp > 0) {           // 最初の検出か？ bufpが0以上
                 cKeybuf[bufp++] = di;
-                if(bufp >= Max){
-                  state = 3;
+                if(bufp >= Max){            
+                  state = 2;
                   bufp = 0;
                   break;
                 }
@@ -38,31 +38,7 @@ void ButtonState2(){
               Ti = millis();
             }
             break;
-#if 0
-    case 1:                                       // 50msec周期の監視
-            if( millis()-Ti >50){
-              di = digitalRead(A2);  
-              if(di == 0) {
-                cKeybuf[bufp++] = di;
-                Ti = millis();
-                state = 2;
-              }
-              Ti = millis();
-            }
-            break;
-#endif
-    case 2:                                       // 50msec周期の監視                        
-             if( millis()-Ti >50){
-                cKeybuf[bufp++] = digitalRead(A2);
-                if(bufp >= Max){
-                  state = 3;
-                  bufp = 0;
-                  break;
-                }
-                Ti = millis();                    // 時間更新
-             }
-            break;
-    case 3:                                     // シングルクリック・ダブルクリック・長押し判定
+    case 2:                                     // シングルクリック・ダブルクリック・長押し判定
             Serial.print("Keybuf:");  
             for(i=0;i<=Max-1;i++)
               Serial.print(cKeybuf[i],DEC);
